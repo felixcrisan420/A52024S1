@@ -1,0 +1,25 @@
+[project]
+name = "A5 - UBB AI, 1011, Felix Crisan, cfai0070"
+version = "0.1.0"
+description = "A project for AI coursework at UBB."
+readme = "README.md"
+license = "MIT"
+authors = [
+    { name = "Felix Crisan", email = "felix.crisan1@stud.ubbcluj.ro" }
+]
+dependencies = [
+    "pytest",              # For testing (if using pytest)
+    "unittest",            # For testing (built-in, no need to install separately)
+    "pandas",              # If your project requires data manipulation
+    "numpy",               # Useful for numerical computations
+    "setuptools",          # Required for packaging
+    "wheel"                # Required for packaging
+]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["service", "repository", "domain", "tests"]
+include_package_data = true
