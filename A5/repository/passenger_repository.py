@@ -32,6 +32,13 @@ class PassengerRepository:
                 passenger_list.append(passenger)
         return passenger_list
     
+    def get_passengers_by_first_and_last_name(self, first_name:str, last_name:str)->list[Passenger]:
+        passenger_list = []
+        for passenger in self.__passenger_list:
+            if passenger.get_first_name() == first_name and passenger.get_last_name() == last_name:
+                passenger_list.append(passenger)
+        return passenger_list
+    
     # Update
     def update_passenger(self, index:int, new_passenger:Passenger)->Passenger:
         self.__passenger_list[index].set_first_name(new_passenger.get_first_name())
@@ -62,10 +69,7 @@ class PassengerRepository:
         with open(f"{cwd}/A5/repository/output/passenger_data.txt", "w") as file:
             for passenger in self.__passenger_list:
                 file.write(f"{passenger.__str__()}\n")
-
-
-            
-                
+       
     # Read from file
     def read_from_file(self):
         cwd = os.getcwd()

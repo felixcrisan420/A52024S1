@@ -4,15 +4,16 @@ from repository.plane_repository import PlaneRepository
 from service.service import Service
 from UI.ui import UI
 from controller.controller import Controller
-import subprocess
-import os
+from utils.utilities import Utilities
 
 if __name__ == "__main__":
     plane_repo = PlaneRepository()
     passenger_repo = PassengerRepository()
-    ui = UI()
     repo = Repository(passenger_repo, plane_repo)
+    utils = Utilities(repo)
     service = Service(repo)
-    controller = Controller(service, ui)
+    controller = Controller(service, utils)
+    ui = UI(service, controller)
+
     
-    controller.run()
+    ui.run()

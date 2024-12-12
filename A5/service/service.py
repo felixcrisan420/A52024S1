@@ -1,6 +1,7 @@
 from domain.plane import Plane
 from domain.passenger import Passenger
 from repository.repository import Repository
+from utils.utilities import Utilities 
 
 class Service:
     def __init__(self, repository:Repository):
@@ -52,6 +53,14 @@ class Service:
             raise TypeError("Plane ID must be a string")
         
         return self.__repository.get_passengers_by_planeID(planeID)
+    
+    def get_passengers_by_first_and_last_name(self, first_name, last_name)->list:
+        if isinstance(first_name, str) == False:
+            raise TypeError("First name must be a string")
+        if isinstance(last_name, str) == False:
+            raise TypeError("Last name must be a string")
+        
+        return self.__repository.get_passengers_by_first_and_last_name(first_name, last_name)
     
     # Update
     def update_passenger(self, index, first_name, last_name, passportID, planeID):
@@ -109,11 +118,11 @@ class Service:
     
     # Read from file passenger
     def read_from_file_passenger(self):
-        return self.__repository.read_from_file_passenger()
+        return self.__repository.read_from_file("Passenger")
     
     # Write to file passenger
     def write_to_file_passenger(self):
-        return self.__repository.write_to_file_passenger()
+        return self.__repository.write_to_file("Passenger")
     
     # CRUD Operations for Plane
     # Create
@@ -122,6 +131,7 @@ class Service:
             raise TypeError("Plane ID must be a string or integer")
         if isinstance(airline_company, str) == False:
             raise TypeError("Airline company must be a string")
+        airline_company = airline_company.replace(" ", "_")
         if isinstance(number_of_seats, int) == False:
             try:
                 number_of_seats = int(number_of_seats)
@@ -237,65 +247,11 @@ class Service:
             raise TypeError("Plane ID must be a string")
         return self.__repository.show_remaining_seats(planeID)
     
-    # 3 Sort Passengers by last name
-    def sort_passengers_in_plane_by_last_name(self, planeID):
-        if isinstance(planeID, str) == False:
-            raise TypeError("Plane ID must be a string")
-        return self.__repository.sort_passengers_in_plane_by_last_name(planeID)
+    def write_to_file_plane(self):
+        return self.__repository.write_to_file("Plane")
     
-    # 4 Sort planes according to the number of passengers
-    def sort_planes_by_number_of_passengers(self):
-        return self.__repository.sort_planes_by_number_of_passengers()
-    
-    # 5 Sort planes accordubg to the number of passengers witht he first name with given substring
-    def sort_planes_by_number_of_passengers_and_first_name_given_substring(self, substring):
-        if isinstance(substring, str) == False:
-            raise TypeError("Substring must be a string")
-        return self.__repository.sort_planes_by_number_of_passengers_and_first_name_given_substring(substring)
-    
-    # 6 Sort planes according to the string obtained by concatenation of the number of passengers in the plane and the destination
-    def sort_planes_by_number_of_passengers_and_destination(self):
-        return self.__repository.sort_planes_by_number_of_passengers_and_destination()
-    
-    # 7 Identify planes that have passengers with passport numbers starting with the same 3 letters
-    def get_planes_with_passengers_with_passport_starting_with_same_3_letters(self):
-        return self.__repository.get_planes_with_passengers_with_passport_starting_with_same_3_letters()
-    
-    # 8 Identify passengers from a given plane for which the first name or last name contatin a string given as parameter
-    def passenger_from_plane_having_first_or_last_name_like_string(self, planeID, substring):
-        if isinstance(planeID, str) == False:
-            raise TypeError("Plane ID must be a string")
-        if isinstance(substring, str) == False:
-            raise TypeError("Substring must be a string")
-        return self.__repository.passenger_from_plane_having_first_or_last_name_like_string(planeID, substring)
-    
-    # 9 Identify plane(s) where there is a passenger with a given name
-    def get_planes_with_passenger_name(self, first_name, last_name):
-        if isinstance(first_name, str) == False:
-            raise TypeError("First name must be a string")
-        if isinstance(last_name, str) == False:
-            raise TypeError("Last name must be a string")
-        return self.__repository.get_planes_with_passenger_name(first_name, last_name)
-    
-    # 10 Form groups of [k] passengers from the same plane but with different last names
-    def groups_of_passengers_from_same_plane(self, planeID, k):
-        if isinstance(planeID, str) == False:
-            raise TypeError("Plane ID must be a string")
-        if isinstance(k, int) == False:
-            try:
-                k = int(k)
-            except:
-                raise TypeError("Number of elements in the group must be an integer")
-        return self.__repository.groups_of_passengers_from_same_plane(planeID, int(k))
-    
-    # 11 Form groups of [k] planes with the same destination but belonging to different airline companies
-    def groups_of_planes_with_same_destination_different_airline(self, k):
-        if isinstance(k, int) == False:
-            try:
-                k = int(k)
-            except:
-                raise TypeError("Number of elements in the group must be an integer")
-        return self.__repository.groups_of_planes_with_same_destination_different_airline(int(k))
+    def read_from_file_plane(self):
+        return self.__repository.read_from_file("Plane")
     
     
     

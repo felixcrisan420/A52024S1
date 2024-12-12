@@ -8,12 +8,12 @@ authors = [
     { name = "Felix Crisan", email = "felix.crisan1@stud.ubbcluj.ro" }
 ]
 dependencies = [
-    "pytest",              # For testing (if using pytest)
-    "unittest",            # For testing (built-in, no need to install separately)
-    "pandas",              # If your project requires data manipulation
-    "numpy",               # Useful for numerical computations
-    "setuptools",          # Required for packaging
-    "wheel"                # Required for packaging
+    "unittest",        
+    "pandas",
+    "numpy",
+    "setuptools",
+    "wheel"
+    "tabulate"
 ]
 
 [build-system]
