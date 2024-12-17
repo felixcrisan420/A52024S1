@@ -58,24 +58,4 @@ class PassengerRepository:
         return passenger
     
     
-    # Write to file
-    def write_to_file(self):
-        cwd = os.getcwd()
-        # Clear the file by opening it in write mode ('w')
-        with open(f"{cwd}/A5/repository/output/passenger_data.txt", "w") as file:
-            pass  # Simply open and close the file to clear its contents
-        
-        # Open the file in write mode ('w') to overwrite it completely
-        with open(f"{cwd}/A5/repository/output/passenger_data.txt", "w") as file:
-            for passenger in self.__passenger_list:
-                file.write(f"{passenger.__str__()}\n")
-       
-    # Read from file
-    def read_from_file(self):
-        cwd = os.getcwd()
-        with open(f"{cwd}/A5/repository/output/passenger_data.txt", "r") as file:
-            for line in file:
-                line = line.strip()
-                line = line.split(" ")
-                passenger = Passenger(line[0], line[1], line[2], line[3])
-                self.__passenger_list.append(passenger)
+    

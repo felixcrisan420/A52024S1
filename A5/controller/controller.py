@@ -1,12 +1,13 @@
-from service.service import Service
+from service.plane_service import PlaneService
+from service.passenger_service import PassengerService
 from domain.plane import Plane
 from domain.passenger import Passenger
-from utils.utilities import Utilities
+from utils.utilities import Utilities as utils
 
 class Controller:
-    def __init__(self, service: Service, utils: Utilities):
-        self.__service = service
-        self.__utils = utils
+    def __init__(self, plane_service: PlaneService, passenger_service:PassengerService):
+        self.__service = plane_service
+        self.__passenger_service = passenger_service
 
     # Methods for Passenger
     # 3 Sort Passengers by last name
@@ -30,7 +31,7 @@ class Controller:
     # 5 Sort planes by the number of passengers with the first name containing a given substring
     def sort_planes_by_number_of_passengers_and_first_name_given_substring(self, substring: str) -> list[Plane]:
         plane_list = self.__service.get_plane_list()
-        filtered_planes = self.__utils.filter_data(
+        filtered_planes = utils.filter_data(
             data=plane_list,
             filter_func=lambda plane: any(
                 substring in passenger.get_first_name()

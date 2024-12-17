@@ -1,10 +1,9 @@
-from repository.repository import Repository
 from domain.plane import Plane
 from domain.passenger import Passenger
 
 class Utilities:
-    def __init__(self, repo: Repository):
-        self.__repo = repo
+    def __init__(self):
+        pass
 
     @staticmethod
     def filter_data(data, filter_func=None):
@@ -77,3 +76,13 @@ class Utilities:
 
         backtrack([], 0)
         return group_list
+    
+    @staticmethod
+    def validate_inputs(data: dict):
+        for key, (value, expected_type) in data.items():
+            if expected_type == "index":
+                raise IndexError(f"{key} out of range")
+            if not isinstance(value, expected_type):
+                raise TypeError(f"{key} must be of type {expected_type.__name__}")
+            if expected_type == str and not value.strip():
+                raise ValueError(f"{key} cannot be empty")
