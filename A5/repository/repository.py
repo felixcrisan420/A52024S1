@@ -34,11 +34,36 @@ class Repository:
     def delete_passenger_by_index(self, index:int)->Passenger:
         return self.__passenger_repo.remove_passenger_by_index(index)
     
-    def read_from_file_passenger(self):
+    def write_to_file_passenger(self) -> bool:
+        """
+        Writes all vectors to a file.
+
+        Args:
+            file_path (str): The path of the file to write to.
+
+        Returns:
+            bool: True if the vectors were successfully written to the file.
+        """
+        import os
+        local_file = "output/passenger_data.txt"
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        file_path = os.path.join(script_dir, local_file)
+        with open(file_path, 'w') as file:
+            for passenger in self.__passenger_repo.get_passenger_list():
+                file.write(str(passenger) + "\n")
+        return True
+    
+    def read_from_file_passenger(self) -> bool:
+        """
+        Reads all vectors from a file.
+
+        Args:
+            file_path (str): The path of the file to read from.
+
+        Returns:
+            bool: True if the vectors were successfully read from the file.
+        """
         self.__passenger_repo.read_from_file()
-        
-    def write_to_file_passenger(self):
-        self.__passenger_repo.write_to_file()
     
     # CRUD Plane
     def add_plane(self, plane:Plane)->Plane:
@@ -68,6 +93,37 @@ class Repository:
     
     def delete_plane(self, plane:Plane)->Plane:
         return self.__plane_repo.delete_plane(plane)
+    
+    def write_to_file_plane(self) -> bool:
+        """
+        Writes all vectors to a file.
+
+        Args:
+            file_path (str): The path of the file to write to.
+
+        Returns:
+            bool: True if the vectors were successfully written to the file.
+        """
+        import os
+        local_file = "output/plane_data.txt"
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        file_path = os.path.join(script_dir, local_file)
+        with open(file_path, 'w') as file:
+            for plane in self.__plane_repo.get_plane_list():
+                file.write(str(plane) + "\n")
+        return True
+    
+    def read_from_file_plane(self) -> bool:
+        """
+        Reads all vectors from a file.
+
+        Args:
+            file_path (str): The path of the file to read from.
+
+        Returns:
+            bool: True if the vectors were successfully read from the file.
+        """
+        self.__plane_repo.read_from_file()
     
     # Show remaining seats
     def show_remaining_seats(self, planeID:str)->int:

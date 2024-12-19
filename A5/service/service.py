@@ -130,6 +130,9 @@ class Service:
         if isinstance(destination, str) == False:
             raise TypeError("Destination must be a string")
         
+        airline_company = airline_company.replace(" ", "_")
+        
+        
         return self.__repository.add_plane(Plane(planeID, airline_company, int(number_of_seats), destination))
     
     # Read
@@ -230,6 +233,22 @@ class Service:
         if isinstance(destination, str) == False:
             raise TypeError("Destination must be a string")
         return self.__repository.delete_plane(Plane(planeID, airline_company, int(number_of_seats), destination))
+    
+     # Read from file passenger
+    def read_from_file_plane(self):
+        return self.__repository.read_from_file_plane()
+    
+    # Write to file passenger
+    def write_to_file_plane(self):
+        return self.__repository.write_to_file_plane()
+    
+    # Read from file passenger
+    def read_from_file_plane(self):
+        return self.__repository.read_from_file_plane()
+    
+    # Write to file passenger
+    def write_to_file_passenger(self):
+        return self.__repository.write_to_file_plane()
     
     # Show remaining seats
     def show_remaining_seats(self, planeID):

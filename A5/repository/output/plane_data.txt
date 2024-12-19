@@ -1,0 +1,5 @@
+PL3 Delta 164 NRT
+PL3 British_Airways 221 SYD
+PL3 Qantas 285 CDG
+PL4 British_Airways 164 JFK
+PL5 British_Airways 121 CDG

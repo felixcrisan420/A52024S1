@@ -225,7 +225,7 @@ class Controller:
             elif user_input == 1:
                 # Sort passengers by last name
                 planeID = input("Enter planeID: ")
-                self.__print_planes(self.__service.sort_passengers_in_plane_by_last_name(planeID))
+                self.__print_passengers(self.__service.sort_passengers_in_plane_by_last_name(planeID), planeID)
                 input("Press ENTER to continue")
             elif user_input == 2:
                 # Sort planes according to the number of passengers
@@ -270,14 +270,15 @@ class Controller:
                 planeID = input("Enter planeID: ")
                 k = input("Enter the number of elements in the group: ")
                 try:
+                    k = int(k)
                     groups = self.__service.groups_of_passengers_from_same_plane(planeID, k)
                     for index, group in enumerate(groups):
                         print(f"Group {index+1}:")
-                        self.__print_planes(group)
+                        self.__print_passengers(group, planeID)
                         print("", end="\n")
                     input("Press ENTER to continue")
-                except:
-                    print("Invalid input")
+                except Exception as e:
+                    print(e)
                     sleep(1)
             elif user_input == 9:
                 # Form groups of [k] planes with the same destination but belonging to different airline companies
@@ -289,8 +290,8 @@ class Controller:
                         self.__print_planes(group)
                         print("", end="\n")
                     input("Press ENTER to continue")
-                except:
-                    print("Invalid input")
+                except Exception as e:
+                    print(e)
                     sleep(1)
             else:
                 print("Invalid input")
@@ -298,6 +299,7 @@ class Controller:
 
     def __main_menu(self):
         self.__service.read_from_file_passenger()
+        self.__service.read_from_file_plane()
         self.__ui.clear_menu()
         while True:
             self.__ui.print_main_menu()
@@ -312,6 +314,7 @@ class Controller:
                     option = input("Save data to file? (y/n): ")
                 if option == "y":
                     self.__service.write_to_file_passenger()
+                    self.__service.write_to_file_plane()
                 self.__print_exit()
                 exit()
             elif user_input == 1:

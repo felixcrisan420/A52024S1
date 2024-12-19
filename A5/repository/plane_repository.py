@@ -1,4 +1,5 @@
 from domain.plane import Plane
+import os
 
 class PlaneRepository:
     def __init__(self):
@@ -58,4 +59,17 @@ class PlaneRepository:
     def delete_plane(self, plane:Plane)->Plane:
         self.__plane_list.remove(plane)
         return plane
+    
+    # Read from file
+    def read_from_file(self):
+        cwd = os.getcwd()
+        file_path = os.path.join(cwd, "repository", "output", "plane_data.txt")
+        
+        with open(file_path, "r") as file:
+            for line in file:
+                line = line.strip() 
+                line = line.split(" ")  
+                plane = Plane(line[0], line[1], int(line[2]), line[3])  
+                self.__plane_list.append(plane)  
+
     
