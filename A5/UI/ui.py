@@ -1,22 +1,29 @@
 import os
 from time import sleep
 from tabulate import tabulate
-from service.service import Service
+from service.passenger_service import PassengerService
+from service.plane_service import PlaneService
 from controller.controller import Controller
 
 
-class UI:
-    def __init__(self, service:Service, controller: Controller):
-        self.__service = service
+class CLI:
+    def __init__(self, passenger_service:PassengerService, plane_service:PlaneService, controller: Controller):
+        self.__plane_service = plane_service
+        self.__passenger_service = passenger_service
         self.__controller = controller
         
     @staticmethod
     def __get_input():
         try:
-            return int(input("Option: "))
+            option = input("Option: ")
+            while not option.isdigit():
+                print("Please enter a valid number.")
+                option = input("Option: ")
+            return int(option)
         except ValueError:
             print("Please enter a valid number.")
             return None
+
 
     @staticmethod 
     def __print_main_menu():
@@ -151,12 +158,9 @@ class UI:
         
     def __plane_menu(self):
         while True:
-            self.__clear_menu()
-            self.__print_plane_menu()
-            user_input = self.__get_input()
-            while user_input == None or user_input == "":
-                print("Please enter an integer")
-                user_input = self.get_input()
+            CLI.__clear_menu()
+            CLI.__print_plane_menu()
+            user_input = CLI. __get_input()
             if user_input == 0:
                 self.__main_menu()
             elif user_input == 1:
@@ -166,7 +170,7 @@ class UI:
                 number_of_seats = input("Enter number of seats: ")
                 destination = input("Enter destination: ")
                 try:
-                    self.__service.add_plane(planeID, airline_company, number_of_seats, destination)
+                    self.__plane_service.add_plane(planeID, airline_company, int(number_of_seats), destination)
                     print("Plane added successfully")
                     sleep(1)
                 except Exception as e:
@@ -174,14 +178,14 @@ class UI:
                     sleep(1)
             elif user_input == 2:
                 # view all planes
-                plane_list = self.__service.get_plane_list()
+                plane_list = self.__plane_service.get_plane_list()
                 self.__print_planes(plane_list)
                 input("Press ENTER to continue")
             elif user_input == 3:
                 # view plane by ID
                 planeID = input("Enter planeID: ")
                 try:
-                    plane = self.__service.get_plane_by_planeID(planeID)
+                    plane = self.__plane_service.get_plane_by_planeID(planeID)
                     self.__print_planes([plane])
                     input("Press ENTER to continue")
                 except Exception as e:
@@ -191,7 +195,7 @@ class UI:
                 # view plane at Repository index
                 index = input("Enter index: ")
                 try:
-                    plane = self.__service.get_plane_by_index(index)
+                    plane = self.__plane_service.get_plane_by_index(index)
                     self.__print_planes([plane])
                     input("Press ENTER to continue")
                 except Exception as e:
@@ -206,7 +210,7 @@ class UI:
                 number_of_seats = input("Enter number of seats: ")
                 destination = input("Enter destination: ")
                 try:
-                    self.__service.update_plane(index, planeID, airline_company, number_of_seats, destination)
+                    self.__plane_service.update_plane(index, planeID, airline_company, number_of_seats, destination)
                     print("Plane updated successfully")
                     sleep(1)
                 except Exception as e:
@@ -216,7 +220,7 @@ class UI:
                 # delete a plane
                 index = input("Enter index: ")
                 try:
-                    self.__service.delete_plane_by_index(index)
+                    self.__plane_service.delete_plane_by_index(index)
                     print("Plane deleted successfully")
                     sleep(1)
                 except Exception as e:
@@ -224,7 +228,7 @@ class UI:
                     sleep(1)
             elif user_input == 8:
                 # Show remaining seats in each plane
-                plane_list = self.__service.get_plane_list()
+                plane_list = self.__plane_service.get_plane_list()
                 self.__print_remaining_seats(plane_list)
                 input("Press ENTER to continue")
             else:
@@ -233,12 +237,9 @@ class UI:
                 
     def __passenger_menu(self):
         while True:
-            self.__clear_menu()
-            self.__print_passenger_menu()
-            user_input = self.__get_input()
-            while(user_input == None or user_input == ""):
-                print("Please enter an integer")
-                user_input = self.__get_input()
+            CLI.__clear_menu()
+            CLI.__print_passenger_menu()
+            user_input = CLI.__get_input()
             if user_input == 0:
                 self.__main_menu()
             elif user_input == 1:
@@ -248,7 +249,7 @@ class UI:
                 passportID = input("Enter passportID: ")
                 planeID = input("Enter planeID: ")
                 try:
-                    self.__service.add_passenger(first_name, last_name, passportID, planeID)
+                    self.__passenger_service.add_passenger(first_name, last_name, passportID, planeID)
                     print("Passenger added successfully")
                     sleep(1)
                 except Exception as e:
@@ -256,14 +257,14 @@ class UI:
                     sleep(1)
             elif user_input == 2:
                 # view all passengers
-                passenger_list = self.__service.get_passenger_list()
+                passenger_list = self.__passenger_service.get_passenger_list()
                 self.__print_passengers(passenger_list, "All")
                 input("Press ENTER to continue")
             elif user_input == 3:
                 # view passenger in a plane by planeID
                 planeID = input("Enter planeID: ")
                 try:
-                    passenger_list = self.__service.get_passengers_by_planeID(planeID)
+                    passenger_list = self.__passenger_service.get_passengers_by_planeID(planeID)
                     self.__print_passengers(passenger_list, planeID)
                     input("Press ENTER to continue")
                 except Exception as e:
@@ -273,7 +274,7 @@ class UI:
                 # search passenger with passportID
                 passportID = input("Enter passportID: ")
                 try:
-                    passenger = self.__service.get_passenger_by_passportID(passportID)
+                    passenger = self.__passenger_service.get_passenger_by_passportID(passportID)
                     self.__print_passengers([passenger], "")
                     input("Press ENTER to continue")
                 except Exception as e:
@@ -284,7 +285,7 @@ class UI:
                 first_name = input("Enter first name: ")
                 last_name = input("Enter last name: ")
                 try:
-                    passenger_list = self.__service.get_passengers_by_first_and_last_name(first_name, last_name)
+                    passenger_list = self.__passenger_service.get_passengers_by_first_and_last_name(first_name, last_name)
                     self.__print_passengers(passenger_list, "All")
                     input("Press ENTER to continue")
                 except Exception as e:
@@ -292,7 +293,7 @@ class UI:
                     sleep(1)
             elif user_input == 6:
                 # view all planes
-                plane_list = self.__service.get_plane_list()
+                plane_list = self.__plane_service.get_plane_list()
                 self.__print_planes(plane_list)
                 input("Press ENTER to continue")
             elif user_input == 7:
@@ -304,7 +305,7 @@ class UI:
                 passportID = input("Enter passportID: ")
                 planeID = input("Enter planeID: ")
                 try:
-                    self.__service.update_passenger(index, first_name, last_name, passportID, planeID)
+                    self.__passenger_service.update_passenger(index, first_name, last_name, passportID, planeID)
                     print("Passenger updated successfully")
                     sleep(1)
                 except Exception as e:
@@ -314,7 +315,7 @@ class UI:
                 # delete a passenger
                 index = input("Enter index: ")
                 try:
-                    self.__service.delete_passenger_by_index(index)
+                    self.__passenger_service.delete_passenger_by_index(index)
                     print("Passenger deleted successfully")
                     sleep(1)
                 except Exception as e:
@@ -326,12 +327,9 @@ class UI:
     
     def __general_menu(self):
         while(True):
-            self.__clear_menu()
-            self.__print_general_menu()
-            user_input = self.__get_input()
-            while(user_input == None or user_input == ""):
-                print("Please enter an integer")
-                user_input = self.__get_input()
+            CLI.__clear_menu()
+            CLI.__print_general_menu()
+            user_input = CLI.__get_input()
             if user_input == 0:
                 self.__main_menu()
             elif user_input == 1:
@@ -383,7 +381,10 @@ class UI:
                 k = input("Enter the number of elements in the group: ")
                 try:
                     groups = self.__controller.groups_of_passengers_from_same_plane(planeID, int(k))
-                    self.__print_backtracking_solutions(groups, lambda group: self.__print_passengers(group, planeID))
+                    self.__print_backtracking_solutions(
+                        groups, 
+                        lambda group: self.__print_passengers(group, planeID)
+                    )
                     input("Press ENTER to continue")
                 except Exception as e:
                     print(e)
@@ -393,7 +394,10 @@ class UI:
                 k = input("Enter the number of elements in the group: ")
                 try:
                     groups = self.__controller.groups_of_planes_with_same_destination_different_airline(int(k))
-                    self.__print_backtracking_solutions(groups, self.__print_planes)
+                    self.__print_backtracking_solutions(
+                        groups, 
+                        self.__print_planes
+                    )
                     input("Press ENTER to continue")
                 except Exception as e:
                     print(e)
@@ -403,22 +407,19 @@ class UI:
                 sleep(1)
 
     def __main_menu(self):
-        self.__clear_menu()
+        CLI.__clear_menu()
         while True:
-            self.__print_main_menu()
-            user_input = self.__get_input()
-            while(user_input == None or user_input == ""):
-                print("Please enter an integer")
-                user_input = self.__get_input()
+            CLI.__print_main_menu()
+            user_input = CLI.__get_input()
             if user_input == 0:
                 option = input("Save data to file? (y/n): ")
                 while option != "y" and option != "n":
                     print("Invalid input")
                     option = input("Save data to file? (y/n): ")
                 if option == "y":
-                    self.__service.write_to_file_passenger()
-                    self.__service.write_to_file_plane()
-                self.__print_exit()
+                    self.__passenger_service.write_to_file()
+                    self.__plane_service.write_to_file()
+                CLI.__print_exit()
                 exit()
             elif user_input == 1:
                 self.__plane_menu()
@@ -430,6 +431,6 @@ class UI:
                 print("Invalid input")
 
     def run(self):
-        self.__service.read_from_file_passenger()
-        self.__service.read_from_file_plane()
+        self.__plane_service.read_from_file()
+        self.__passenger_service.read_from_file()
         self.__main_menu()

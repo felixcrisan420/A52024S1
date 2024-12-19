@@ -1,5 +1,6 @@
 from domain.passenger import Passenger
-import os
+from utils.utilities import FileHandler
+from constants.const import Constants as const
 
 class PassengerRepository:
     def __init__(self):
@@ -56,6 +57,14 @@ class PassengerRepository:
         passenger = self.__passenger_list[index]
         del self.__passenger_list[index]
         return passenger
+    
+    def read_from_file(self):
+        self.__passenger_list = FileHandler.read_from_file(const.FILE_NAME_PASSENGER, Passenger) 
+        return self.__passenger_list
+
+    def write_to_file(self):
+        FileHandler.write_to_file(const.FILE_NAME_PASSENGER, self.__passenger_list)
+        return self.__passenger_list
     
     
     

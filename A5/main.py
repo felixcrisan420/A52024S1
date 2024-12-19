@@ -1,19 +1,19 @@
-from repository.repository import Repository
 from repository.passenger_repository import PassengerRepository
 from repository.plane_repository import PlaneRepository
-from service.service import Service
-from UI.ui import UI
+from service.plane_service import PlaneService
+from service.passenger_service import PassengerService
+from UI.ui import CLI
 from controller.controller import Controller
-from utils.utilities import Utilities
 
 if __name__ == "__main__":
-    plane_repo = PlaneRepository()
-    passenger_repo = PassengerRepository()
-    repo = Repository(passenger_repo, plane_repo)
-    utils = Utilities(repo)
-    service = Service(repo)
-    controller = Controller(service, utils)
-    ui = UI(service, controller)
+    plane_repository = PlaneRepository()
+    passenger_repository = PassengerRepository()
 
-    
+    plane_service = PlaneService(plane_repository)
+    passenger_service = PassengerService(passenger_repository)
+
+    controller = Controller(plane_service, passenger_service)
+
+    ui = CLI(passenger_service, plane_service, controller) 
+
     ui.run()

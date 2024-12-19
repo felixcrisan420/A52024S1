@@ -1,4 +1,6 @@
 from domain.plane import Plane
+from utils.utilities import FileHandler
+from constants.const import Constants as const
 import os
 
 class PlaneRepository:
@@ -60,24 +62,10 @@ class PlaneRepository:
         self.__plane_list.remove(plane)
         return plane
     
-    # Write to file
-    def write_to_file(self):
-        cwd = os.getcwd()
-        # Clear the file by opening it in write mode ('w')
-        with open(f"{cwd}/A5/repository/output/plane_data.txt", "w") as file:
-            pass  # Simply open and close the file to clear its contents
-        
-        # Open the file in write mode ('w') to overwrite it completely
-        with open(f"{cwd}/A5/repository/output/plane_data.txt", "w") as file:
-            for plane in self.__plane_list:
-                file.write(f"{plane.__str__()}\n")
-       
-    # Read from file
     def read_from_file(self):
-        cwd = os.getcwd()
-        with open(f"{cwd}/A5/repository/output/plane_data.txt", "r") as file:
-            for line in file:
-                line = line.strip()
-                line = line.split(" ")
-                passenger = Plane(line[0], line[1], int(line[2]), line[3])
-                self.__plane_list.append(passenger)
+        self.__plane_list = FileHandler.read_from_file(const.FILE_NAME_PLANE, Plane)
+        return self.__plane_list
+    
+    def write_to_file(self):
+        FileHandler.write_to_file(const.FILE_NAME_PLANE, self.__plane_list)
+        return self.__plane_list

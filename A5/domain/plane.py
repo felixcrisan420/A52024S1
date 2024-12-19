@@ -64,9 +64,10 @@ class Plane:
     def __repr__(self)->str:
         return f"{self.__planeID} {self.__airline_company} {self.__number_of_seats} {self.__destination}"
     
-    def __eq__(self, other_plane)->bool:
-        if self.__planeID == other_plane.get_planeID() and self.__airline_company == other_plane.get_airline_company() and self.__number_of_seats == other_plane.get_number_of_seats() and self.__destination == other_plane.get_destination():
-            return True
+    def __eq__(self, other_plane:"Plane")->bool:
+        if isinstance(other_plane, Plane) == True:
+            if self.__planeID == other_plane.get_planeID() and self.__airline_company == other_plane.get_airline_company() and self.__number_of_seats == other_plane.get_number_of_seats() and self.__destination == other_plane.get_destination():
+                return True
         return False
     
 
