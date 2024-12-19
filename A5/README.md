@@ -59,11 +59,8 @@ A5 - UBB AI
 ## Installation
 1. Clone the repository:
    ```bash
-   git clone --no-checkout https://github.com/felixcrisan420/FA2024S1 FA2024S1
-   cd FA2024S1
-   git sparse-checkout init --cone
-   git sparse-checkout set A5
-   git checkout main
+   git clone <repository-url>
+   cd A5-UBB-AI
    ```
 2. Install dependencies:
    ```bash

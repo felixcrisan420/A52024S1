@@ -10,7 +10,7 @@ if __name__ == "__main__":
     passenger_repository = PassengerRepository()
 
     plane_service = PlaneService(plane_repository)
-    passenger_service = PassengerService(passenger_repository)
+    passenger_service = PassengerService(passenger_repository, plane_repository)
 
     controller = Controller(plane_service, passenger_service)
 
