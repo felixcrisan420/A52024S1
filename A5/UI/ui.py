@@ -101,7 +101,7 @@ class CLI:
                 0. Return to the main menu
                 1. Sort passengers by last name
                 2. Sort planes according to the number of passengers
-                3. Sort planes accordubg to the number of passengers witht he first name with given substring
+                3. Sort planes according to the number of passengers with the first name with given substring
                 4. Sort planes according to the string obtained by concatenation of the number of passengers in the plane and the destination
                 5. Identify planes that have passengers with passport numbers starting with the same 3 letters
                 6. Identify passengers from a given plane for which the first name or last name contatin a string given as parameter
