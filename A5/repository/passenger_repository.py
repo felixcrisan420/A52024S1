@@ -40,6 +40,12 @@ class PassengerRepository:
                 passenger_list.append(passenger)
         return passenger_list
     
+    def get_passenger_by_passportID(self, passportID:str)->Passenger:
+        for passenger in self.__passenger_list:
+            if passenger.get_passportID() == passportID:
+                return passenger
+        return Passenger("Does not exist", "Does not exist", "Does not exist", "Does not exist")
+    
     # Update
     def update_passenger(self, index:int, new_passenger:Passenger)->Passenger:
         self.__passenger_list[index].set_first_name(new_passenger.get_first_name())
@@ -49,17 +55,26 @@ class PassengerRepository:
         return self.__passenger_list[index]
     
     # Delete
+    def delete_passenger_by_object(self, passenger:Passenger)->Passenger:
+        self.__passenger_list.remove(passenger)
+        return passenger
+
+    def delete(self, passenger:Passenger)->Passenger:
+        self.__passenger_list.remove(passenger)
+        return passenger
+    
     def delete_passenger(self, passenger:Passenger)->Passenger:
         self.__passenger_list.remove(passenger)
         return passenger
 
-    def remove_passenger_by_index(self, index)->Passenger:
+    def delete_passenger_by_index(self, index)->Passenger:
         passenger = self.__passenger_list[index]
         del self.__passenger_list[index]
         return passenger
     
     def read_from_file(self):
-        self.__passenger_list = FileHandler.read_from_file(const.FILE_NAME_PASSENGER, Passenger) 
+        for passenger in FileHandler.read_from_file(const.FILE_NAME_PASSENGER, Passenger):
+            self.__passenger_list.append(passenger)
         return self.__passenger_list
 
     def write_to_file(self):

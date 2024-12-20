@@ -80,15 +80,37 @@ class Utilities:
         return group_list
     
     @staticmethod
-    def validate_inputs(data: dict):
+    def validate_inputs(data: dict, list_of_data=None):
         for key, (value, expected_type) in data.items():
             if expected_type == "index":
-                raise IndexError(f"{key} out of range")
-            if not isinstance(value, expected_type):
-                raise TypeError(f"{key} must be of type {expected_type.__name__}")
-            if expected_type == str and not value.strip():
-                raise ValueError(f"{key} cannot be empty")
-            
+                if list_of_data is None:
+                    raise ValueError(f"{key} cannot be validated as an index because list_of_data is not provided")
+                if not isinstance(value, int):
+                    raise TypeError(f"{key} must be an integer for index validation")
+                if value < 0 or value >= len(list_of_data):
+                    raise IndexError(f"{key} is out of range")
+            else:
+                if not isinstance(value, expected_type):
+                    raise TypeError(f"{key} must be of type {expected_type.__name__}")
+                if expected_type == str and not value.strip():
+                    raise ValueError(f"{key} cannot be empty")
+
+          
+    @staticmethod  
+    def check_integer(integer:str)->bool:
+        try:
+            int(integer)
+            return True
+        except:
+            print(f"{integer} must be int.")
+            return False
+        
+    @staticmethod
+    def check_existance(data:str, list_of_data:list)->bool:
+        if data not in list_of_data:
+            print(f"{data} does not exist.")
+            return False
+        return True
 
 class FileHandler:
     @staticmethod
@@ -101,8 +123,13 @@ class FileHandler:
         :return: List of objects of the specified type.
         """
         final_list = []
-        file_path = os.path.join(os.getcwd(), "A5", "repository", "output", file_name)
-
+        # if I am in A5, just do not add it
+        if os.getcwd().endswith("A5"):
+            file_path = os.path.join(os.getcwd(), "repository", "output", file_name)
+        else:
+            file_path = os.path.join(os.getcwd(), "A5", "repository", "output", file_name)
+        print(f"Read from {file_path}")
+        time.sleep(1)
         try:
             with open(file_path, "r") as file:
                 for line in file:
@@ -120,6 +147,7 @@ class FileHandler:
                     else:
                         raise ValueError(f"Invalid line format: {line}")
                     final_list.append(obj)
+        
         except FileNotFoundError:
             print(f"Error: File '{file_path}' not found.")
         except Exception as e:
@@ -131,11 +159,15 @@ class FileHandler:
     def write_to_file(file_name, list_to_write):
         import os
         cwd = os.getcwd()
-        # Clear the file by opening it in write mode ('w')
-        with open(f"{cwd}/A5/repository/output/{file_name}", "w") as file:
-            pass  # Simply open and close the file to clear its contents
+        if os.getcwd().endswith("A5"):
+            file_path = os.path.join(os.getcwd(), "repository", "output", file_name)
+        else:
+            file_path = os.path.join(os.getcwd(), "A5", "repository", "output", file_name)
+        with open(file_path, "w") as file:
+            pass  
         
-        # Open the file in write mode ('w') to overwrite it completely
-        with open(f"{cwd}/A5/repository/output/{file_name}.txt", "w") as file:
+        with open(file_path, "w") as file:
             for element in list_to_write:
                 file.write(f"{element.__str__()}\n")
+                
+        print(f"Wrote to {file_path}")

@@ -43,6 +43,13 @@ class PlaneRepository:
             if plane.get_planeID() == planeID:
                 return plane
         return Plane(0, "Does not exist", 0, "Does not exist")
+    
+    def get_passenger_list(self, planeID:str)->list:
+        temp_list = []
+        for plane in self.__plane_list:
+            if plane.get_planeID() == planeID:
+                temp_list.append(plane)
+        return temp_list
         
     # Update
     def update_plane(self, index:int, plane:Plane)->Plane:
@@ -58,12 +65,23 @@ class PlaneRepository:
         del self.__plane_list[index]
         return plane
     
+    def delete_plane_by_object(self, plane:Plane)->Plane:
+        self.__plane_list.remove(plane)
+        return plane
+    
     def delete_plane(self, plane:Plane)->Plane:
         self.__plane_list.remove(plane)
         return plane
     
+    def show_remaining_seats(self, planeID:str)->int:
+        for plane in self.__plane_list:
+            if plane.get_planeID() == planeID:
+                return plane.get_number_of_seats() - len(self.get_passenger_list(planeID))
+        return
+    
     def read_from_file(self):
-        self.__plane_list = FileHandler.read_from_file(const.FILE_NAME_PLANE, Plane)
+        for plane in FileHandler.read_from_file(const.FILE_NAME_PLANE, Plane):
+            self.__plane_list.append(plane)
         return self.__plane_list
     
     def write_to_file(self):

@@ -95,12 +95,25 @@ class Controller:
     # 11 Form groups of [k] planes with the same destination but belonging to different airline companies
     def groups_of_planes_with_same_destination_different_airline(self, k: int) -> list:
         plane_list = self.__plane_service.get_plane_list()
-        
+
+        def is_valid_group(group, plane):
+            # Check if the group is empty or if the plane satisfies the conditions
+            if not group:
+                return True
+            # Ensure the plane's destination matches the group's destination
+            if plane.get_destination() != group[0].get_destination():
+                return False
+            # Ensure the plane's airline company is not already in the group
+            if plane.get_airline_company() in [p.get_airline_company() for p in group]:
+                return False
+            return True
+
         return utils.generalized_backtracking(
             data=plane_list,
             k=k,
-            is_valid_group=lambda group, plane: len(group) == 0 or plane.get_airline_company() not in [p.get_airline_company() for p in group]
+            is_valid_group=is_valid_group
         )
+
 
         
                 

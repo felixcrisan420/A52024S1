@@ -1,7 +1,6 @@
 from domain.plane import Plane
 from repository.plane_repository import PlaneRepository
-from utils.utilities import Utilities, FileHandler
-from constants.const import Constants as const
+from utils.utilities import Utilities
 
 
 
@@ -31,10 +30,12 @@ class PlaneService:
         return self.__plane_repository.get_plane_list()
     
     def get_plane_by_index(self, index)->Plane:
+        # add the list of data to validate inputs
         Utilities.validate_inputs({
             "Index": (index, "index")
-        })
-            
+            },
+            self.__plane_repository.get_plane_list()
+        )
         return self.__plane_repository.get_plane_by_index(int(index))
     
     def get_index_by_plane(self, planeID, airline_company, number_of_seats, destination)->int:
@@ -62,8 +63,9 @@ class PlaneService:
     def update_plane(self, index, planeID, airline_company, number_of_seats, destination):
         Utilities.validate_inputs({
             "Index": (index, "index")
-        })
-            
+            },
+            self.__plane_repository.get_plane_list()
+        ) 
         if planeID == "":
             planeID = self.__plane_repository.get_plane_by_index(index).get_planeID()
         if airline_company == "":
@@ -86,10 +88,12 @@ class PlaneService:
     def delete_plane_by_index(self, index):
         Utilities.validate_inputs({
             "Index": (index, "index")
-        })
+            },
+            self.__plane_repository.get_plane_list()
+        )
         return self.__plane_repository.delete_plane_by_index(int(index))
     
-    def delete_plane(self, planeID, airline_company, number_of_seats, destination): 
+    def delete_plane_by_object(self, planeID, airline_company, number_of_seats, destination): 
         Utilities.validate_inputs({
             "Plane ID": (planeID, str),
             "Airline Company": (airline_company, str),
