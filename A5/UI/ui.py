@@ -9,12 +9,24 @@ from utils.utilities import Utilities as utils
 
 class CLI:
     def __init__(self, passenger_service:PassengerService, plane_service:PlaneService, controller: Controller):
+        """Initializes the CLI class with the given services and controller.
+
+        Args:
+            passenger_service (PassengerService): Passenger service object.
+            plane_service (PlaneService): Plane service object.
+            controller (Controller): Controller object.
+        """
         self.__plane_service = plane_service
         self.__passenger_service = passenger_service
         self.__controller = controller
         
     @staticmethod
     def __get_input():
+        """Gets the user input and checks if it is a valid number.
+
+        Returns:
+            int: The user input if it is a valid number, None otherwise.
+        """
         try:
             option = input("Option: ")
             while not option.isdigit():
@@ -113,13 +125,24 @@ class CLI:
 
     @staticmethod
     def __clear_menu():
+        """Clears the console screen.
+        """
         os.system('cls' if os.name == 'nt' else 'clear')
 
     @staticmethod
     def __print_exit():
+        """Prints a message when the user exits the program.
+        """
         print("Exiting program")
         
     def __print_planes(self, plane_list):
+        """
+        Prints the list of planes in a table format.
+        
+        Args:
+            plane_list (list): List of planes to be printed
+        """
+        
         headers = ["Index", "Plane ID", "Airline Company", "Number of Seats", "Destination"]
         table = []
         for index, plane in enumerate(plane_list):
@@ -127,6 +150,12 @@ class CLI:
         print(tabulate(table, headers=headers, tablefmt="grid"))
         
     def __print_passengers(self, passenger_list, option):
+        """Prints the list of passengers in a table format.
+
+        Args:
+            passenger_list (list): List of passengers to be printed.
+            option (str): Additional information to be displayed in the table.
+        """
         headers = ["Index", "First Name", "Last Name", "Passport ID", f"Plane ID\n{option}"]
         table = []
         for index, passenger in enumerate(passenger_list):
@@ -134,6 +163,11 @@ class CLI:
         print(tabulate(table, headers=headers, tablefmt="grid"))
         
     def __print_remaining_seats(self, plane_list):
+        """Prints the remaining seats in each plane from the list of planes.
+
+        Args:
+            plane_list (list): List of planes to be printed.
+        """
         headers = ["Index", "Plane ID", "Remaining Seats"]
         table = []
         for index, plane in enumerate(plane_list):

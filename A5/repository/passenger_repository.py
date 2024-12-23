@@ -191,7 +191,7 @@ class PassengerRepository:
         del self.__passenger_list[index]
         return passenger
     
-    def read_from_file(self):
+    def read_from_file(self)->list[Passenger]:
         """
         Read from file and return the passenger list.
 
@@ -199,13 +199,13 @@ class PassengerRepository:
             None
 
         Returns:
-            list: The list of passengers.
+            list[Passenger]: The list of passengers.
         """
         for passenger in FileHandler.read_from_file(const.FILE_NAME_PASSENGER, Passenger):
             self.__passenger_list.append(passenger)
         return self.__passenger_list
 
-    def write_to_file(self):
+    def write_to_file(self)->list[Passenger]:
         """
         Write to file and return the passenger list.
 
@@ -213,7 +213,7 @@ class PassengerRepository:
             None
 
         Returns:
-            list: The list of passengers.
+            list[Passenger]: The list of passengers.
         """
         FileHandler.write_to_file(const.FILE_NAME_PASSENGER, self.__passenger_list)
         return self.__passenger_list

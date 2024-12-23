@@ -81,6 +81,19 @@ class Utilities:
     
     @staticmethod
     def validate_inputs(data: dict, list_of_data=None):
+        """Validate the input data based on the expected types and constraints.
+
+        Args:
+            data (dict): A dictionary of key-value pairs where the key is the name of the data
+            list_of_data (list, optional): The list of data to validate against. Defaults to None.
+
+        Raises:
+            ValueError: Validation error due to constraints.
+            TypeError: Validation error due to data type mismatch.
+            IndexError: Validation error due to index out of range.
+            TypeError: The key must be of type str
+            ValueError: The key cannot be empty
+        """
         for key, (value, expected_type) in data.items():
             if expected_type == "index":
                 if list_of_data is None:
@@ -89,6 +102,9 @@ class Utilities:
                     raise TypeError(f"{key} must be an integer for index validation")
                 if value < 0 or value >= len(list_of_data):
                     raise IndexError(f"{key} is out of range")
+            if isinstance(value, int):
+                if value < 0:
+                    raise ValueError(f"{key} cannot be negative")
             else:
                 if not isinstance(value, expected_type):
                     raise TypeError(f"{key} must be of type {expected_type.__name__}")
@@ -98,6 +114,14 @@ class Utilities:
           
     @staticmethod  
     def check_integer(integer:str)->bool:
+        """Check if the input is an integer
+
+        Args:
+            integer (str): Input to check
+
+        Returns:
+            bool: True if the input is an integer, False otherwise
+        """ 
         try:
             int(integer)
             return True
@@ -107,6 +131,15 @@ class Utilities:
         
     @staticmethod
     def check_existance(data:str, list_of_data:list)->bool:
+        """Check if the data exists in the list of data
+
+        Args:
+            data (str): Data to check
+            list_of_data (list): List of data to check against
+
+        Returns:
+            bool: True if the data exists in the list of data, False otherwise
+        """
         if data not in list_of_data:
             print(f"{data} does not exist.")
             return False
@@ -118,9 +151,16 @@ class FileHandler:
         """
         Reads data from a file and dynamically creates objects of the specified type.
         
-        :param file_name: Name of the file to read from.
-        :param obj_type: Class type to construct (e.g., Passenger or Plane).
-        :return: List of objects of the specified type.
+        Args:
+            file_name (str): The name of the file to read from.
+            obj_type (type): The type of object to create.
+            
+        Returns:
+            list: A list of objects created from the file.
+            
+        Raises:
+            FileNotFoundError: If the file does not exist.
+            Exception: If an error occurs while reading the file.
         """
         final_list = []
         # if I am in A5, just do not add it
@@ -156,7 +196,16 @@ class FileHandler:
         return final_list
     
     @staticmethod
-    def write_to_file(file_name, list_to_write):
+    def write_to_file(file_name, list_to_write:list):
+        """Write data to a file.
+
+        Args:
+            file_name (str): The name of the file to write to.
+            list_to_write (list): The list of objects to write to the file.
+            
+        Raises:
+            Exception: If an error occurs while writing to the file.
+        """
         import os
         cwd = os.getcwd()
         if os.getcwd().endswith("A5"):

@@ -17,3 +17,4 @@ if __name__ == "__main__":
     ui = CLI(passenger_service, plane_service, controller) 
 
     ui.run()
+    

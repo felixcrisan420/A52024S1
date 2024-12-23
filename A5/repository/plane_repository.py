@@ -125,6 +125,15 @@ class PlaneRepository:
         
     # Update
     def update_plane(self, index:int, plane:Plane)->Plane:
+        """Update a plane in the list.
+
+        Args:
+            index (int): The index of the plane in the list.
+            plane (Plane): The updated plane object.
+
+        Returns:
+            Plane: The updated plane object.
+        """
         self.__plane_list[index].set_planeID(plane.get_planeID())
         self.__plane_list[index].set_airline_company(plane.get_airline_company())
         self.__plane_list[index].set_number_of_seats(plane.get_number_of_seats())
@@ -133,29 +142,71 @@ class PlaneRepository:
 
     # Delete
     def delete_plane_by_index(self, index:int)->Plane:
+        """Delete a plane by index.
+
+        Args:
+            index (int): The index of the plane in the list.
+            
+        Returns:
+            Plane: The plane object that was deleted.
+        """
         plane = self.__plane_list[index]
         del self.__plane_list[index]
         return plane
     
     def delete_plane_by_object(self, plane:Plane)->Plane:
+        """Delete a plane by object.
+
+        Args:
+            plane (Plane): The plane object to be deleted.
+
+        Returns:
+            Plane: The plane object that was deleted.
+        """
         self.__plane_list.remove(plane)
         return plane
     
     def delete_plane(self, plane:Plane)->Plane:
+        """Delete a plane from the list.
+
+        Args:
+            plane (Plane): The plane to be deleted.
+
+        Returns:
+            Plane: The plane that was deleted.
+        """
         self.__plane_list.remove(plane)
         return plane
     
     def show_remaining_seats(self, planeID:str)->int:
+        """Show the remaining seats on a plane.
+
+        Args:
+            planeID (str): The planeID of the plane.
+
+        Returns:
+            int: The number of remaining seats on the plane.
+        """
         for plane in self.__plane_list:
             if plane.get_planeID() == planeID:
                 return plane.get_number_of_seats() - len(self.get_passenger_list(planeID))
         return
     
-    def read_from_file(self):
+    def read_from_file(self)->list[Plane]:
+        """Read from file.
+
+        Returns:
+            list[Plane]: The list of planes.
+        """
         for plane in FileHandler.read_from_file(const.FILE_NAME_PLANE, Plane):
             self.__plane_list.append(plane)
         return self.__plane_list
     
-    def write_to_file(self):
+    def write_to_file(self)->list[Plane]:
+        """Write to file.
+
+        Returns:
+            list[Plane]: The list of planes.
+        """
         FileHandler.write_to_file(const.FILE_NAME_PLANE, self.__plane_list)
         return self.__plane_list
