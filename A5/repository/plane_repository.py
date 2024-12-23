@@ -5,22 +5,67 @@ import os
 
 class PlaneRepository:
     def __init__(self):
+        """
+        Constructor for PlaneRepository class.
+
+        Args:
+            None
+
+        Returns:
+            None
+        """
         self.__plane_list = []
     
     # CRUD Operations for Plane
     # Create
     def add_plane(self, plane:Plane)->Plane:
+        """
+        Add a plane to the plane list.
+
+        Args:
+            plane (Plane): The plane object to be added.
+
+        Returns:
+            Plane: The plane object that was added.
+        """
         self.__plane_list.append(plane)
         return plane
 
     # Read
     def get_plane_list(self)->list[Plane]:
+        """
+        Getter for the plane list.
+
+        Args:
+            None
+
+        Returns:
+            list[Plane]: The list of planes.
+        """
         return self.__plane_list
     
     def get_plane_by_index(self, index:int)->Plane:
+        """
+        Getter for a plane by index.
+
+        Args:
+            index (int): The index of the plane.
+
+        Returns:
+            Plane: The plane object at the index.
+        """
         return self.__plane_list[index]
     
     def get_index_by_plane(self, search_plane:Plane)->int:
+        """
+        Getter for the index of a plane.
+
+        Args:
+            search_plane (Plane): The plane object to search for.
+
+        Returns:
+            int: The index of the plane.
+        """
         index=0
         for plane in self.__plane_list:
             index += 1
@@ -30,6 +75,15 @@ class PlaneRepository:
             return -1
         
     def get_index_by_planeID(self, planeID:str)->int:
+        """
+        Getter for the index of a plane by planeID.
+
+        Args:
+            planeID (str): The planeID of the plane.
+
+        Returns:
+            int: The index of the plane.
+        """
         index=0
         for plane in self.__plane_list:
             index += 1
@@ -39,12 +93,30 @@ class PlaneRepository:
             return -1
         
     def get_plane_by_planeID(self, planeID:str)->Plane:
+        """
+        Getter for a plane by planeID.
+
+        Args:
+            planeID (str): The planeID of the plane.
+        
+        Returns:
+            Plane: The plane object with the planeID.
+        """
         for plane in self.__plane_list:
             if plane.get_planeID() == planeID:
                 return plane
         return Plane(0, "Does not exist", 0, "Does not exist")
     
     def get_passenger_list(self, planeID:str)->list:
+        """
+        Getter for the passenger list of a plane.
+
+        Args:
+            planeID (str): The planeID of the plane.
+
+        Returns:
+            list: The list of passengers on the plane.
+        """
         temp_list = []
         for plane in self.__plane_list:
             if plane.get_planeID() == planeID:
